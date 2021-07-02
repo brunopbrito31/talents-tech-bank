@@ -5,22 +5,14 @@ import java.util.Scanner;
 
 public class Exercicios {
     public static void main(String[] args) {
-        exercicio4();
+        exercicio6();
     }
 
     public static void exercicio1(){ // Concluído
         // Escreva um algoritmo que leia um número inteiro e diga que se ele é par ou ímpar.
-
         Scanner reader = new Scanner(System.in);
-
         System.out.println("Digite o número: ");
-
-        if(!reader.hasNextInt()){
-            System.out.println("Erro de entrada: Você precisa digitar um número do tipo inteiro!");
-            reader.close();
-            System.exit(1);
-        }
-
+        validaInteiros(reader); // Validação de dados de entrada
         int numero = reader.nextInt();
 
         System.out.println("IF/ELSE");
@@ -43,9 +35,7 @@ public class Exercicios {
         }
 
         System.out.println("IF/ELSE TERNÁRIO");
-
         String resultadoTernario = numero % 2 == 0 ? "É um número par": "É um número ímpar";
-
         System.out.println(resultadoTernario);
 
         reader.close();
@@ -56,16 +46,9 @@ public class Exercicios {
         // Infantil A = 5 a 7 anos, Infantil B = 8 a 11 anos
         // Juvenil A = 12 a 13 anos, Juvenil B = 14 a 17 anos
         // Adultos = Maiores de 18 anos
-
         Scanner reader = new Scanner(System.in);
         System.out.println("Digite a idade do nadador: ");
-
-        if(!reader.hasNextInt()){
-            System.out.println("Erro de entrada: A idade deve ser representada através de um número inteiro! ");
-            reader.close();
-            System.exit(1);
-        }
-
+        validaInteiros(reader); // Validação de entrada
         int idade = reader.nextInt();
 
         // Opção escolhida, levando em consideração este caso : If-Else
@@ -97,22 +80,14 @@ public class Exercicios {
     public static void exercicio3(){ // Concluído
         /* Escreva um algoritmo em Java que leia dois números inteiros e determine qual é o menor.
         Escreva um algoritmo que determina o maior também. */
-
         Scanner reader = new Scanner(System.in);
 
         System.out.print("Digite o primeiro número: ");
-        if(!reader.hasNextInt()){
-            System.out.println("Erro de entrada: A entrada deverá conter somente números inteiros");
-            reader.close();
-            System.exit(1);
-        }
+        validaInteiros(reader); // Validação de entrada
         int numA = reader.nextInt();
+
         System.out.print("Digite o segundo número: ");
-        if(!reader.hasNextInt()){
-            System.out.println("Erro de entrada: A entrada deverá conter somente números inteiros");
-            reader.close();
-            System.exit(1);
-        }
+        validaInteiros(reader);
         int numB = reader.nextInt();
 
         /*if(numA == numB){ // Código alternativo, substituido pelo código mais abaixo
@@ -127,9 +102,9 @@ public class Exercicios {
             System.out.println(resultMaior); // Caso eu quiser calcular o  menor basta trocar a variável para resultMenor dentro da impressão.
         }*/
 
-
         String resultMaior = numA == numB?"Os números são iguais": numA>numB?"O Primeiro número digitado é o maior: "+numA:"O segundo numero digitado é o maior: "+numB;
         String resultMenor = numA == numB?"Os números são iguais": numA<numB?"O Primeiro número digitado é o menor: "+numA:"O segundo numero digitado é o menor: "+numB;
+
         System.out.println(); // Organização da saída
         System.out.println("Resultado: *************");
 
@@ -139,7 +114,6 @@ public class Exercicios {
         }else{
             System.out.println(resultMaior);
         }
-
         reader.close();
     }
 
@@ -152,22 +126,16 @@ public class Exercicios {
         Scanner reader = new Scanner(System.in);
 
         int maiorValor = 0, menorValor=0;
+        double soma =0.0;
 
         //Apenas me utilizei do laço de repetição pois pela quantidade de números, o código ficaria muito "sujo"
 
         for(int i=0; i<10; i++){
             System.out.println("Digite um número inteiro e positivo: ");
-            if(!reader.hasNextInt()){
-                System.out.println("Erro de entrada: Só é permitida a entrada de números inteiros!");
-                reader.close();
-                System.exit(1);
-            }
+            validaInteiros(reader);
             int num = reader.nextInt();
-            if(num<0){
-                System.out.println("Erro de entrada: Só é permitida a entrada de números positivos!");
-                reader.close();
-                System.exit(1);
-            }
+            validaInteirosPositivos(num, reader);
+            soma = soma+num;
             if(num>maiorValor){
                 maiorValor=num;
             }
@@ -182,6 +150,7 @@ public class Exercicios {
         }
         System.out.println("O maior valor é: "+maiorValor);
         System.out.println("O menor valor é: "+menorValor);
+        System.out.println("A média do conjunto de números é: "+soma/10.0);
         reader.close();
     }
 
@@ -195,21 +164,14 @@ public class Exercicios {
         Scanner reader = new Scanner(System.in);
 
         System.out.print("Digite o primeiro número: ");
-        if(!reader.hasNextDouble()){
-            System.out.println("Erro de entrada: A entrada deverá ser um número! ");
-            reader.close();
-            System.exit(1);
-        }
+        validaDouble(reader); // Validação -> Número
         Double numA = reader.nextDouble();
+
         System.out.print("Digite o segundo número: ");
-        if(!reader.hasNextDouble()){
-            System.out.println("Erro de entrada: A entrada deverá ser um número! ");
-            reader.close();
-            System.exit(1);
-        }
+        validaDouble(reader);
         Double numB = reader.nextDouble();
 
-        boolean indefinicao =(numA == 0 && numB == 0) || numB ==0;
+        boolean indefinicao =(numA == 0 && numB == 0) || numB ==0; // Variável para analisar se há indefinição matemática
 
         System.out.println("******************************************************");
         System.out.println("Escolha a operação que deseja realizar, Digite: ");
@@ -220,13 +182,14 @@ public class Exercicios {
             System.out.println("1 Para Soma, 2 Para Subtração, 3 Para Multiplicação e 4 Para Divisão: ");
         }
 
-        if(!reader.hasNextInt()){
+        validaInteiros(reader);
+        int operacao = reader.nextInt();
+
+        if(operacao != 1 && operacao != 2 && operacao !=3 && operacao != 4){ // Validação de entrada de operação válida.
             System.out.println("Erro de entrada: Operação Inválida, não permitida.");
             reader.close();
             System.exit(1);
         }
-
-        int operacao = reader.nextInt(); // Variavel sinalizar indeterminação matemática
 
         //Nesse caso, optei por um switch, por questões de praticidade e desempenho
         switch (operacao){
@@ -316,5 +279,28 @@ public class Exercicios {
                 break;
         }
         reader.close();
+    }
+
+    // Métodos auxiliares
+    public static void validaInteiros(Scanner reader){
+        if(!reader.hasNextInt()){
+            System.out.println("Erro de entrada: Você precisa digitar um número do tipo inteiro!");
+            reader.close();
+            System.exit(1);
+        }
+    }
+    public static void validaInteirosPositivos(int num, Scanner reader){
+        if(num<0){
+            System.out.println("Erro de entrada: Só é permitida a entrada de números positivos!");
+            reader.close();
+            System.exit(1);
+        }
+    }
+    public static void validaDouble(Scanner reader){
+        if(!reader.hasNextDouble()){
+            System.out.println("Erro de entrada: A entrada deverá ser um número! ");
+            reader.close();
+            System.exit(1);
+        }
     }
 }
