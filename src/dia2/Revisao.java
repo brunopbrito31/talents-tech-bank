@@ -1,6 +1,4 @@
-package dia1;
-
-import java.sql.SQLOutput;
+package dia2;
 
 public class Revisao {
 

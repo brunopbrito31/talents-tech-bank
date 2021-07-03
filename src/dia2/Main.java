@@ -3,27 +3,21 @@ package dia2;
 public class Main {
 
     public static void main(String[] args) {
-        operadores();
+        //boolean
+        boolean verdadeiroOuFalso=true;
+        char caracterSimple ='a';
+        byte baite = 127;
+        short inteiroCurto = 32767;
+        int inteiro = 2_147_483_647;
+        long longo = 2_147_483_647;
+        float pontoFlutuante = 2.90f;
+        double pontoFlutuanteComMaiorPrecisao = 2.90;
+
+        Boolean verdadeiroOuFalseClasse = true;
+
+        short idade =18;
+        System.out.println(idade);
+
+        System.out.println(inteiro);
     }
-
-    public static void operadores() {
-        int idade = 20; // ok
-
-        int i = 1 + 1; // ok
-
-        System.out.println(10.0 / 3.0);  // ok
-        System.out.println(10 % 3);  // ok
-
-
-        boolean operadorRelacional = 1 == 2; // ==, !=, >, <,  >=, <= // ok
-        //boolean tiposDiferentes = "1" == 1; Impossível de fazer no Java // ok
-
-
-        // Operadores Lógicos
-
-        boolean testeLogico = 1 == 1 || 2 == 1; // ok
-
-        boolean invertido = !true; // ok
-    }
-
 }
