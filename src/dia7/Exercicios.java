@@ -11,7 +11,6 @@ public class Exercicios {
     public static void main(String[] args) {
         exercicio2();
 
-
     }
 
     public static void exercicio1(){
