@@ -1,8 +1,8 @@
-package dia8;
+package dia7;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -11,6 +11,13 @@ public class Desafio {
         int[] vect = {-6,-9,-2,0,2,5,7,3,12};
         desafio1(vect);
     }
+    Function soma = new Function<Integer,Integer>(){
+        @Override
+        public Integer apply(Integer a) {
+            return a*5; // retorna o valor multiplicado por 5
+        }
+    };
+
 
     public static void desafio1(int[] arrayGenérico){
         /*Dado um array de números inteiros com valores negativos e positivos,
@@ -40,7 +47,6 @@ public class Desafio {
         return null;
 
     }
-
-
-
 }
+
+
