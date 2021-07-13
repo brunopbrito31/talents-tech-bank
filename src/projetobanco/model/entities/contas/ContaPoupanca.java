@@ -9,11 +9,6 @@ public class ContaPoupanca extends ContaBancaria{
     }
 
     @Override
-    public void depositar(double valor) {
-
-    }
-
-    @Override
     public double sacar(double valor){
         if(valor > 0){
             if(valor <= getSaldo()) {
@@ -28,7 +23,12 @@ public class ContaPoupanca extends ContaBancaria{
     }
 
     @Override
-    public void imprimirExtrato() {
-
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString())
+                .append("\n")
+                .append(" Tipo de Conta: ")
+                .append("Poupança");
+        return sb.toString();
     }
 }

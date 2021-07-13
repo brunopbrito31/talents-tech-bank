@@ -2,6 +2,11 @@ package projetobanco.model.entities.contas;
 
 import projetobanco.model.entities.usuarios.Cliente;
 
+import java.sql.Date;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public abstract class ContaBancaria {
 
@@ -11,11 +16,17 @@ public abstract class ContaBancaria {
 
     private double saldo;
 
+    private List<Transacao> movimentacoes;
+
 
     public ContaBancaria(int numeroDaConta, Cliente titular, double saldo) {
         this.numeroDaConta = numeroDaConta;
         this.titular = titular;
         this.saldo = saldo;
+        movimentacoes = new ArrayList(){{
+            add(new Transacao("Criacao da Conta",saldo, Date.from(Instant.now())));
+        }};
+
     }
 
     public void depositar(double valor){
@@ -29,7 +40,9 @@ public abstract class ContaBancaria {
     public abstract double sacar(double valor);
 
 
-    public abstract void imprimirExtrato();
+    public void imprimirMovimentacoes(){
+        movimentacoes.forEach(System.out::println);
+    }
 
 
 
@@ -57,6 +70,27 @@ public abstract class ContaBancaria {
         this.saldo = saldo;
     }
 
+    public List<Transacao> getMovimentacoes() {
+        return movimentacoes;
+    }
+
+    /*public void setMovimentacoes(List<Transacao> movimentacoes) {
+        this.movimentacoes = movimentacoes;
+    }*/
+
     //método para finalizar a conta
+
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Titular: ")
+                .append(titular.getNome())
+                .append(" Número da Conta: ")
+                .append(numeroDaConta)
+                .append(" Saldo da Conta: ")
+                .append(saldo);
+        return sb.toString();
+    }
 
 }

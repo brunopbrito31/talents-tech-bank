@@ -8,11 +8,11 @@ public class ContaCorrente extends ContaBancaria{
 
     private double saldoChequeEspecial;
     private double saldoAdicionalChequeEspecial;
-    private double debitoChequeEspecial;
     private double limiteChequeEspecial;
     private double adicionalChequeEspecial;
+    private double debitoAdicionalChequeEspecial = adicionalChequeEspecial - saldoAdicionalChequeEspecial;
+    private double debitoChequeEspecial = limiteChequeEspecial-saldoChequeEspecial;
     private double saldoTotal = super.getSaldo()+saldoChequeEspecial+saldoAdicionalChequeEspecial;
-
 
 
     public ContaCorrente(int numeroDaConta, Cliente titular, double saldo) {
@@ -23,20 +23,27 @@ public class ContaCorrente extends ContaBancaria{
         debitoChequeEspecial = 0;
     }
 
-    @Override
-    public void depositar(double valor) {
-
-    }
-
-    @Override
+    @Override // Verificar os calculos
     public double sacar(double valor) {
-        // implementar metodo de sacar
-        return 0d;
-    }
-
-    @Override
-    public void imprimirExtrato() {
-
+        if(valor <= getSaldo()){
+            setSaldo(getSaldo()-valor);
+            return getSaldo();
+        }else if(valor > getSaldo() && valor <= getSaldo()+saldoChequeEspecial){
+            double result = saldoChequeEspecial - (valor - getSaldo());
+            saldoChequeEspecial = result;
+            System.out.println("Você utilizou R$:"+String.format("%.2f",result)+" do seu cheque especial");
+            setSaldo(0);
+            return -1 * saldoChequeEspecial;
+        }else if(valor > getSaldo()+saldoChequeEspecial+saldoAdicionalChequeEspecial){
+            double result = saldoChequeEspecial+saldoAdicionalChequeEspecial+getSaldo()-valor;
+            System.out.println("Você utilizou R$:"+String.format("%.2f",result)+" do seu limite emergencial de crédito");
+            saldoAdicionalChequeEspecial = result;
+            saldoChequeEspecial = 0;
+            setSaldo(0);
+            return -1 * (saldoAdicionalChequeEspecial+limiteChequeEspecial);
+        }else{
+            throw new IllegalArgumentException("Saldo insuficiente!");
+        }
     }
 
     public double getLimiteChequeEspecial() {
@@ -95,5 +102,15 @@ public class ContaCorrente extends ContaBancaria{
         }else{
             throw new IllegalArgumentException("Acesso Negado!");
         }
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString())
+                .append("\n")
+                .append(" Tipo de Conta: ")
+                .append("Corrente");
+        return sb.toString();
     }
 }

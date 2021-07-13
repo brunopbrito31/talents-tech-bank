@@ -1,5 +1,6 @@
 package projetobanco.model.entities.contas;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -57,7 +58,8 @@ public class Transacao {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Tipo: ").append(nome).append(" Valor: ").append(valorMovimentado);
+        SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); // conferir se essa string do formato de data está correta
+        sb.append("Tipo: ").append(nome).append(" Valor: R$:").append(String.format("%.2f"+valorMovimentado)).append(" Data e Hora: ").append(sfd.format(dataDaMovimentacao));
         return sb.toString();
     }
 }
