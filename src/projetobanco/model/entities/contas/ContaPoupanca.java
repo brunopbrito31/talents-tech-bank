@@ -14,8 +14,17 @@ public class ContaPoupanca extends ContaBancaria{
     }
 
     @Override
-    public double sacar(double valor) {
-        return 0;
+    public double sacar(double valor){
+        if(valor > 0){
+            if(valor <= getSaldo()) {
+                setSaldo(getSaldo() - valor);
+                return getSaldo();
+            } else {
+                throw new IllegalArgumentException("Saldo insuficiente!");
+            }
+        }else{
+            throw new IllegalArgumentException("Valor inválido");
+        }
     }
 
     @Override

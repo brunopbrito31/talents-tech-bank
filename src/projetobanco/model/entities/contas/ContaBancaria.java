@@ -2,6 +2,7 @@ package projetobanco.model.entities.contas;
 
 import projetobanco.model.entities.usuarios.Cliente;
 
+
 public abstract class ContaBancaria {
 
     private int numeroDaConta;
@@ -10,15 +11,23 @@ public abstract class ContaBancaria {
 
     private double saldo;
 
+
     public ContaBancaria(int numeroDaConta, Cliente titular, double saldo) {
         this.numeroDaConta = numeroDaConta;
         this.titular = titular;
         this.saldo = saldo;
     }
 
-    public abstract void depositar(double valor);
+    public void depositar(double valor){
+        if(valor > 0){
+            saldo = saldo + valor;
+        }else{
+            throw new IllegalArgumentException("valor inválido");
+        }
+    }
 
     public abstract double sacar(double valor);
+
 
     public abstract void imprimirExtrato();
 

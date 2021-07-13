@@ -13,12 +13,20 @@ import java.util.stream.Collectors;
 
 public class ServicosDaConta {
 
+    public static void sacar(){
+        // implementar método de saque
+    }
+
+    public static void depositar(){
+        //implmentar método de deposito
+    }
+
     public static void transferir(ContaBancaria conta1, ContaBancaria conta2){
         // implementar método de transferência
     }
 
-    public static void adicionarLimiteDeChequeEspecial(){
-        // implementar método de adicionar limiteDeCheque
+    public static void adicionarLimiteDeChequeEspecial(ContaCorrente conta, String senhaGerente, double valor){
+        conta.adicionarLimiteChequeEspecial(valor,senhaGerente);
     }
 
     public static void encerrarContaBancaria(ContaBancaria conta){
@@ -66,4 +74,6 @@ public class ServicosDaConta {
         }
         return 0;
     }
+
+
 }
