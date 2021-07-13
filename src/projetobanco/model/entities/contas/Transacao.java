@@ -59,7 +59,7 @@ public class Transacao {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); // conferir se essa string do formato de data está correta
-        sb.append("Tipo: ").append(nome).append(" Valor: R$:").append(String.format("%.2f"+valorMovimentado)).append(" Data e Hora: ").append(sfd.format(dataDaMovimentacao));
+        sb.append("Tipo: ").append(nome).append(" Valor: R$:").append(String.format("%.2f",valorMovimentado)).append(" Data e Hora: ").append(sfd.format(dataDaMovimentacao));
         return sb.toString();
     }
 }

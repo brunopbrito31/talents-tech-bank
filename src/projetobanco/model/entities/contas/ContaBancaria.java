@@ -88,8 +88,8 @@ public abstract class ContaBancaria {
                 .append(titular.getNome())
                 .append(" Número da Conta: ")
                 .append(numeroDaConta)
-                .append(" Saldo da Conta: ")
-                .append(saldo);
+                .append(" Saldo da Conta: R$:")
+                .append(String.format("%.2f",saldo));
         return sb.toString();
     }
 

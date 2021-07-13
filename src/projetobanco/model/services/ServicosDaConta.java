@@ -9,19 +9,20 @@ import projetobanco.model.entities.usuarios.Cliente;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ServicosDaConta {
 
-    public static void exibirMenu(){
-
+    public static ContaBancaria encontrarContaBancaria(int conta){
+        Optional<ContaBancaria> opBanco = Banco.getContas()
+                .stream().filter(x -> x.getNumeroDaConta() == conta).findFirst();
+        if(opBanco.isPresent()){
+            return opBanco.get();
+        }else{
+            throw new IllegalArgumentException("Conta Bancária não encontrada");
+        }
     }
-
-
 
     public static void sacar(double valor, ContaBancaria contaBancaria){
         try{
@@ -101,7 +102,7 @@ public class ServicosDaConta {
         System.out.print("Deseja criar qual tipo de conta? 1.Corrente | 2.Poupança: ");
         int opcao = reader.nextInt();
         reader.nextLine();
-        reader.close();
+        //reader.close();
 
         if(opcao == 1) return new ContaCorrente(gerarNumeroContaNaoRepetido(),cliente,saldoInicial);
         if(opcao == 2) return new ContaPoupanca(gerarNumeroContaNaoRepetido(),cliente,saldoInicial);
