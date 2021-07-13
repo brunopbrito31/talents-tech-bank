@@ -85,7 +85,7 @@ public abstract class ContaBancaria {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Titular: ")
-                .append(titular.getNome())
+                .append(this.titular.getNome())
                 .append(" Número da Conta: ")
                 .append(numeroDaConta)
                 .append(" Saldo da Conta: R$:")

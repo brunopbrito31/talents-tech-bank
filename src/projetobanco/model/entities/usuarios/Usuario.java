@@ -3,7 +3,7 @@ package projetobanco.model.entities.usuarios;
 
 import java.util.Objects;
 
-public class Usuario {
+public abstract class Usuario {
 
     private String nome;
 
