@@ -18,7 +18,8 @@ public class ServicosDoBanco {
             System.out.print("Digite o número do gerente: ");
             String numero = reader.nextLine().trim();
             System.out.print("Crie uma senha para o gerente: ");
-            String senha = reader.nextLine().trim();
+            Integer senha = reader.nextInt();
+            reader.nextLine();
             Banco.getGerentes().add(new Gerente(nome,numero,senha));
         }
         System.out.println("Todos os gerentes foram criados com sucesso!");

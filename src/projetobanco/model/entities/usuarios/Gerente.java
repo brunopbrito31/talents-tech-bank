@@ -4,18 +4,18 @@ import java.util.Objects;
 
 public class Gerente extends Usuario{
 
-    private String identificador = "Gerente";
+    private Integer identificador;
 
-    public Gerente(String nome, String telefone, String identificador) {
+    public Gerente(String nome, String telefone, int identificador) {
         super(nome, telefone);
         identificador = identificador;
     }
 
-    public String getIdentificador() {
+    public Integer getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(String identificador) {
+    public void setIdentificador(Integer identificador) {
         this.identificador = identificador;
     }
 

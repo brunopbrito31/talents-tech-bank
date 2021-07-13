@@ -1,7 +1,9 @@
 package projetobanco.model.entities.contas;
 
-import com.sun.org.apache.bcel.internal.generic.ATHROW;
+import projetobanco.model.entities.Banco;
 import projetobanco.model.entities.usuarios.Cliente;
+
+import java.util.stream.Collectors;
 
 public class ContaCorrente extends ContaBancaria{
 
@@ -13,7 +15,6 @@ public class ContaCorrente extends ContaBancaria{
     private double debitoAdicionalChequeEspecial = adicionalChequeEspecial - saldoAdicionalChequeEspecial;
     private double debitoChequeEspecial = limiteChequeEspecial-saldoChequeEspecial;
     private double saldoTotal = super.getSaldo()+saldoChequeEspecial+saldoAdicionalChequeEspecial;
-
 
     public ContaCorrente(int numeroDaConta, Cliente titular, double saldo) {
         super(numeroDaConta, titular, saldo);
@@ -28,13 +29,13 @@ public class ContaCorrente extends ContaBancaria{
         if(valor <= getSaldo()){
             setSaldo(getSaldo()-valor);
             return getSaldo();
-        }else if(valor > getSaldo() && valor <= getSaldo()+saldoChequeEspecial){
+        }else if(valor > getSaldo() && valor <= getSaldo()+saldoChequeEspecial && getSaldo()+saldoChequeEspecial - valor > 0){
             double result = saldoChequeEspecial - (valor - getSaldo());
             saldoChequeEspecial = result;
             System.out.println("Você utilizou R$:"+String.format("%.2f",result)+" do seu cheque especial");
             setSaldo(0);
             return -1 * saldoChequeEspecial;
-        }else if(valor > getSaldo()+saldoChequeEspecial+saldoAdicionalChequeEspecial){
+        }else if(valor < getSaldo()+saldoChequeEspecial+saldoAdicionalChequeEspecial){
             double result = saldoChequeEspecial+saldoAdicionalChequeEspecial+getSaldo()-valor;
             System.out.println("Você utilizou R$:"+String.format("%.2f",result)+" do seu limite emergencial de crédito");
             saldoAdicionalChequeEspecial = result;
@@ -95,8 +96,9 @@ public class ContaCorrente extends ContaBancaria{
         this.saldoTotal = saldoTotal;
     }
 
-    public void adicionarLimiteChequeEspecial(double valor, String senhaGerente){
-        if(senhaGerente.equals("gerenteRainbow123")){
+    // erro na validação
+    public void adicionarLimiteChequeEspecial(double valor, int senhaGerente){
+        if(! Banco.getGerentes().stream().filter(x -> x.getIdentificador() == senhaGerente).collect(Collectors.toList()).isEmpty()){
             limiteChequeEspecial = limiteChequeEspecial + valor;
             adicionalChequeEspecial = limiteChequeEspecial * 0.35; // clientes do Rainbow possuem um limite adicional de 35% do cheque especial
         }else{

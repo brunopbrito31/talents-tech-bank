@@ -10,31 +10,32 @@ public class ServicosDoMenu {
 
     public static void exibirMenu(){
         Scanner reader = new Scanner(System.in);
-        try{
             int m = 0;
             while(m == 0){
-                System.out.println("Digite o número da conta que deseja utilizar: ");
-                int num = reader.nextInt();
-                ContaBancaria cont = ServicosDaConta.encontrarContaBancaria(num);
-                exibirOpções();
-                int op = processarEntradaDoMenu(reader);
-                m = processarOpcaoMenu(op,cont,reader);
+                try {
+                    System.out.println("Digite o número da conta que deseja utilizar: ");
+                    int num = reader.nextInt();
+                    ContaBancaria cont = ServicosDaConta.encontrarContaBancaria(num);
+                    exibirOpções();
+                    int op = processarEntradaDoMenu(reader);
+                    m = processarOpcaoMenu(op, cont, reader);
+                }catch (IllegalArgumentException e){
+                    System.out.println("Error: "+e.getMessage());
+                }
             }
-        }catch (IllegalArgumentException e){
-            System.out.println("Error: "+e.getMessage());
         }
 
-    }
 
     public static void exibirOpções(){
         System.out.println("Escolha qual opção deseja realizar:");
-        System.out.println("1. Listar Extrato");
-        System.out.println("2. realizar saque");
+        System.out.println("1. Listar extrato");
+        System.out.println("2. Realizar saque");
         System.out.println("3. Depositar");
         System.out.println("4. Adicionar limite de cheque especial");
-        System.out.println("5. Para Adicionar uma nova conta");
+        System.out.println("5. Para adicionar uma nova conta");
         System.out.println("6. Para acessar uma conta pelo número");
         System.out.println("7. Para sair");
+        System.out.println("8. Para encerrar uma conta");
     }
 
     public static int processarEntradaDoMenu(Scanner reader){
@@ -72,18 +73,17 @@ public class ServicosDoMenu {
                 reader.nextLine();
                 if(opp == 1){
                     System.out.print("Digite a sua senha: ");
-                    String validar = reader.nextLine().trim();
+                    int validar = reader.nextInt();
+                    reader.nextLine();
                     // Corigir a validação
-                    if(Banco.getGerentes().stream().filter(x -> x.getIdentificador().equals(validar)).count() > 0){
-                        System.out.print("Digite o valor que deseja adicionar de limite de cheque especial para o cliente: ");
-                        double valorr = reader.nextDouble();
-                        reader.nextLine();
-                        ServicosDaConta.adicionarLimiteDeChequeEspecial((ContaCorrente) contaBancaria,validar,valorr);
-                        System.out.println("Adicionado com sucesso!");
-                        break;
-                    }else{
-                        throw new IllegalArgumentException("Erro de Validação: Gerente não encontrado");
-                    }
+
+                    System.out.print("Digite o valor que deseja adicionar de limite de cheque especial para o cliente: ");
+                    double valorr = reader.nextDouble();
+                    reader.nextLine();
+                    ServicosDaConta.adicionarLimiteDeChequeEspecial((ContaCorrente) contaBancaria,validar,valorr);
+                    System.out.println("Adicionado com sucesso!");
+                    break;
+
                 }else{
                     break;
                 }
@@ -99,7 +99,11 @@ public class ServicosDoMenu {
             case 7:
                 System.out.println("O Programa está sendo encerrado");
                 return 1;
-
+            case 8:
+                System.out.println("Digite o número da conta que deseja encerrar: ");
+                int numConta1 = reader.nextInt();
+                reader.nextLine();
+                ServicosDaConta.encerrarContaBancaria(numConta1);
         }
         return 0; // no case 7 tenho que por return 1
     }
@@ -111,7 +115,7 @@ public class ServicosDoMenu {
         }
     }
     public static void validaOpcao(int op){
-        if(op > 7 || op < 1){
+        if(op > 8 || op < 1){
             throw new IllegalArgumentException("Opção Inválida!");
         }
     }

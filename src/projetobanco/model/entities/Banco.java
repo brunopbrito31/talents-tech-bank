@@ -19,9 +19,9 @@ public class Banco {
         System.out.println("BANCO: "+NOME_BANCO+"  ***********************************");
         contas = new ArrayList<>();
         gerentes = new HashSet<>();
-        gerentes.add(new Gerente("Virginia","11999995555","rbBank"));
-        gerentes.add(new Gerente("Gisele","55988884457","bank2"));
-        gerentes.add(new Gerente("Bruno","75975554444","rbBank12"));
+        gerentes.add(new Gerente("Virginia","11999995555",1037));
+        gerentes.add(new Gerente("Gisele","55988884457",1835));
+        gerentes.add(new Gerente("Bruno","75975554444",8899));
         ContaBancaria contaInicial = ServicosDaConta.criarContaBancaria();
         contas.add(contaInicial);
         ServicosDoMenu.exibirMenu();

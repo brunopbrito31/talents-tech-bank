@@ -2,7 +2,7 @@ package projetobanco.model.entities.contas;
 
 import projetobanco.model.entities.usuarios.Cliente;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;

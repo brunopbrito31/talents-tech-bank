@@ -14,6 +14,24 @@ import java.util.stream.Collectors;
 
 public class ServicosDaConta {
 
+    public static void encerrarContaBancaria(Integer numConta){
+        ContaBancaria conta = ServicosDaConta.encontrarContaBancaria(numConta);
+        if(conta.getClass().equals(ContaCorrente.class)){
+           if(((ContaCorrente) conta).getSaldoChequeEspecial() == ((ContaCorrente) conta).getLimiteChequeEspecial() &&
+           ((ContaCorrente) conta).getAdicionalChequeEspecial() == ((ContaCorrente) conta).getSaldoAdicionalChequeEspecial()){
+               ServicosDaConta.sacar(conta.getSaldo(),conta);
+               Banco.getContas().remove(conta);
+               System.out.println("Conta encerrada com sucesso!");
+           }else{
+               throw new IllegalArgumentException("A conta possui débitos de cheque especial em aberto");
+           }
+        }else{
+            ServicosDaConta.sacar(conta.getSaldo(),conta);
+            Banco.getContas().remove(conta);
+            System.out.println("Conta encerrada com sucesso!");
+        }
+    }
+
     public static ContaBancaria encontrarContaBancaria(int conta){
         Optional<ContaBancaria> opBanco = Banco.getContas()
                 .stream().filter(x -> x.getNumeroDaConta() == conta).findFirst();
@@ -73,7 +91,7 @@ public class ServicosDaConta {
         contaBancaria.imprimirMovimentacoes();
     }
 
-    public static void adicionarLimiteDeChequeEspecial(ContaCorrente conta, String senhaGerente, double valor){
+    public static void adicionarLimiteDeChequeEspecial(ContaCorrente conta, Integer senhaGerente, double valor){
         try{
             conta.adicionarLimiteChequeEspecial(valor,senhaGerente);
             System.out.println("Limite adicionado com sucesso!");
