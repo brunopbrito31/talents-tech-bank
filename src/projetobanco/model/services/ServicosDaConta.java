@@ -76,6 +76,7 @@ public class ServicosDaConta {
     public static void adicionarLimiteDeChequeEspecial(ContaCorrente conta, String senhaGerente, double valor){
         try{
             conta.adicionarLimiteChequeEspecial(valor,senhaGerente);
+            System.out.println("Limite adicionado com sucesso!");
         }catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
         }
