@@ -18,31 +18,34 @@ public class ServicosDoMenu {
         Scanner reader = new Scanner(System.in);
         Boolean gerente = false;
 
-        System.out.println();
-        System.out.println("************RAINBOWBANK**********");
-        System.out.println("Opções: ");
-        System.out.println("1. Acessar como gerente");
-        System.out.println("2. Iniciar operação para usuários");
-        System.out.print("Entre com a opção desejada: ");
-        int opAuxE = reader.nextInt();
-        reader.nextLine();
 
-        if(opAuxE == 1){
-            System.out.print("Digite a sua senha: ");
-            int senhaAux11 = reader.nextInt();
-            reader.nextLine();
-            if (Banco.getGerentes().stream().filter(x -> (x.getIdentificador().equals(senhaAux11))).findFirst().isPresent()){
-                gerente = true;
-            }else{
-                throw new IllegalArgumentException("Senha Inválida, Acesso Negado!");
-            }
-        }else if(opAuxE >2){
-            throw new IllegalArgumentException("Entrada Inválida!");
-        }
 
         int n = 0;
         while(n == 0){
             try{
+                System.out.println();
+                System.out.println("************RAINBOWBANK**********");
+                System.out.println("Opções: ");
+                System.out.println("1. Acessar como gerente");
+                System.out.println("2. Iniciar operação para usuários");
+                System.out.print("Entre com a opção desejada: ");
+                int opAuxE = reader.nextInt();
+                reader.nextLine();
+                if(opAuxE == 1){
+                    System.out.print("Digite a sua senha: ");
+                    int senhaAux11 = reader.nextInt();
+                    reader.nextLine();
+                    if (Banco.getGerentes().stream().filter(x -> (x.getIdentificador().equals(senhaAux11))).findFirst().isPresent()){
+                        gerente = true;
+                    }else{
+                        throw new IllegalArgumentException("Senha Inválida, Acesso Negado!");
+                    }
+                }else if(opAuxE >2){
+                    throw new IllegalArgumentException("Entrada Inválida!");
+                }else if(opAuxE ==2){
+                    gerente = false;
+                }
+
                 int conta;
                 if(!gerente){
                     System.out.print("Digite o numero da conta com a qual deseja trabalhar:");
@@ -83,6 +86,7 @@ public class ServicosDoMenu {
             System.out.println("1. Listar extrato");
             System.out.println("2. Realizar saque");
             System.out.println("3. Realizar depósito");
+            System.out.println("4. Realizar trasnferência");
         }
         System.out.println("5. Para sair");
         System.out.print("Entre com a opção desejada: ");
@@ -150,8 +154,16 @@ public class ServicosDoMenu {
                     reader.nextLine();
                     ServicosDaConta.encerrarContaBancaria(numContaAux2);
                     break;
-                }else{ // implementar o realizar transferência entre contas validando se ambas existem
-                    throw new IllegalArgumentException("Opção Inválida!");
+                }else{ // Cliente - Transferência entre contas
+                    System.out.print("Digite o numero da conta para a qual deseja transferir: ");
+                    int numConta = reader.nextInt();
+                    reader.nextLine();
+                    ContaBancaria contaDestino = ServicosDaConta.encontrarContaBancaria(numConta);
+                    System.out.print("Digite o valor que deseja transferir: ");
+                    double valorTransf = reader.nextDouble();
+                    reader.nextLine();
+                    ServicosDaConta.transferir(contaBancaria,contaDestino,valorTransf);
+                    break;
                 }
             case 5: //sair do programa
                 return 1;
