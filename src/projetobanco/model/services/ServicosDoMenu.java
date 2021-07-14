@@ -62,8 +62,9 @@ public class ServicosDoMenu {
 
             }catch (IllegalArgumentException e){
                 System.out.println("Error: "+e.getMessage());
-            }// VERIFICAR SE A ADIÇÃO DE FINALLY COM O FECHAMENTO DO RECURSO SCANNER VAI QUEBRAR APLICAÇÃO
+            }
         }
+        reader.close();
 
     }
 
