@@ -1,12 +1,10 @@
 package projetobanco.model.entities.contas;
 
 import projetobanco.model.entities.usuarios.Cliente;
-
 import java.util.Date;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public abstract class ContaBancaria {
 
@@ -18,33 +16,27 @@ public abstract class ContaBancaria {
 
     private List<Transacao> movimentacoes;
 
-
     public ContaBancaria(int numeroDaConta, Cliente titular, double saldo) {
         this.numeroDaConta = numeroDaConta;
         this.titular = titular;
         this.saldo = saldo;
-        movimentacoes = new ArrayList(){{
-            add(new Transacao("Criacao da Conta",saldo, Date.from(Instant.now())));
-        }};
-
+        movimentacoes = new ArrayList<>();
+        movimentacoes.add(new Transacao("Criacao da Conta",saldo, Date.from(Instant.now())));
     }
-
     public void depositar(double valor){
         if(valor > 0){
             saldo = saldo + valor;
+            System.out.println("Valor de R$:"+String.format("%.2f",valor)+" foi depositado com sucesso!");
         }else{
-            throw new IllegalArgumentException("valor inválido");
+            throw new IllegalArgumentException("Valor inválido");
         }
     }
 
     public abstract double sacar(double valor);
 
-
     public void imprimirMovimentacoes(){
         movimentacoes.forEach(System.out::println);
     }
-
-
 
     public int getNumeroDaConta() {
         return numeroDaConta;
@@ -74,13 +66,6 @@ public abstract class ContaBancaria {
         return movimentacoes;
     }
 
-    /*public void setMovimentacoes(List<Transacao> movimentacoes) {
-        this.movimentacoes = movimentacoes;
-    }*/
-
-    //método para finalizar a conta
-
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -92,5 +77,4 @@ public abstract class ContaBancaria {
                 .append(String.format("%.2f",saldo));
         return sb.toString();
     }
-
 }

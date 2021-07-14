@@ -1,6 +1,5 @@
 package projetobanco.model.entities.usuarios;
 
-
 import java.util.Objects;
 
 public abstract class Usuario {

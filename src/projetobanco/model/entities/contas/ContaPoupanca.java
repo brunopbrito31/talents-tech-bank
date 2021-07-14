@@ -1,5 +1,4 @@
 package projetobanco.model.entities.contas;
-
 import projetobanco.model.entities.usuarios.Cliente;
 
 public class ContaPoupanca extends ContaBancaria{

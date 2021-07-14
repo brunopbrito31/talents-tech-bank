@@ -6,7 +6,6 @@ import projetobanco.model.entities.contas.ContaCorrente;
 import projetobanco.model.entities.contas.ContaPoupanca;
 import projetobanco.model.entities.contas.Transacao;
 import projetobanco.model.entities.usuarios.Cliente;
-
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
@@ -23,7 +22,7 @@ public class ServicosDaConta {
                Banco.getContas().remove(conta);
                System.out.println("Conta encerrada com sucesso!");
            }else{
-               throw new IllegalArgumentException("A conta possui débitos de cheque especial em aberto");
+               throw new IllegalArgumentException("A conta possui débitos em aberto"); // Sugestão: mostrar os valores
            }
         }else{
             ServicosDaConta.sacar(conta.getSaldo(),conta);
@@ -45,7 +44,7 @@ public class ServicosDaConta {
     public static void sacar(double valor, ContaBancaria contaBancaria){
         try{
             contaBancaria.sacar(valor);
-            Transacao transacao = new Transacao("saque",valor, Date.from(Instant.now()));
+            Transacao transacao = new Transacao("Saque",valor, Date.from(Instant.now()));
             contaBancaria.getMovimentacoes().add(transacao);
             System.out.println("Saque efetuado com sucesso!");
             System.out.println("Dados da Transação: "+transacao);
@@ -56,13 +55,12 @@ public class ServicosDaConta {
 
     public static void depositar(double valor, ContaBancaria contaBancaria){
         try{
-            criarContaBancaria().depositar(valor);
-            Transacao transacao = new Transacao("depósito",valor,Date.from(Instant.now()));
+            contaBancaria.depositar(valor);
+            Transacao transacao = new Transacao("Depósito",valor,Date.from(Instant.now()));
             contaBancaria.getMovimentacoes().add(transacao);
-            System.out.println("Depósito realizado com sucesso!");
             System.out.println("Dados da Transação: "+transacao);
         }catch (IllegalArgumentException e){
-            System.out.println("Error, Operação não realizada: "+e.getMessage());
+            System.out.println("Error: "+e.getMessage());
         }
     }
 
@@ -100,10 +98,6 @@ public class ServicosDaConta {
         }
     }
 
-    public static void encerrarContaBancaria(ContaBancaria conta){
-        // implementar método de encerramento
-    }
-
     public static ContaBancaria criarContaBancaria(){
         Locale.setDefault(Locale.US);
 
@@ -126,8 +120,6 @@ public class ServicosDaConta {
         if(opcao == 1) return new ContaCorrente(gerarNumeroContaNaoRepetido(),cliente,saldoInicial);
         if(opcao == 2) return new ContaPoupanca(gerarNumeroContaNaoRepetido(),cliente,saldoInicial);
         else throw new IllegalArgumentException("Opção Inválida");
-
-
     }
 
     public static int gerarNumeroContaNaoRepetido(){  // Testar esse método
@@ -138,7 +130,6 @@ public class ServicosDaConta {
             numeroConta = 1 + numero.nextInt(9999);
             final int numeroConta2 = numeroConta;
             if(Banco.getContas().stream().filter(x -> x.getNumeroDaConta() == numeroConta2).collect(Collectors.toList()).isEmpty()){
-
                 n = 1;
                 System.out.println("Numero da conta gerado: "+numeroConta2);
                 return numeroConta2;
@@ -146,6 +137,4 @@ public class ServicosDaConta {
         }
         return 0;
     }
-
-
 }
