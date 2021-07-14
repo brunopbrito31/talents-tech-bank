@@ -118,8 +118,16 @@ public class ServicosDaConta {
         reader.nextLine();
         //reader.close();
 
-        if(opcao == 1) return new ContaCorrente(gerarNumeroContaNaoRepetido(),cliente,saldoInicial);
-        if(opcao == 2) return new ContaPoupanca(gerarNumeroContaNaoRepetido(),cliente,saldoInicial);
+        if(opcao == 1) {
+            ContaBancaria contBanc = new ContaCorrente(gerarNumeroContaNaoRepetido(),cliente,saldoInicial);
+            Banco.getContas().add(contBanc);
+            return contBanc;
+        }
+        if(opcao == 2) {
+            ContaBancaria contBanc = new ContaPoupanca(gerarNumeroContaNaoRepetido(),cliente,saldoInicial);
+            Banco.getContas().add(contBanc);
+            return contBanc;
+        }
         else throw new IllegalArgumentException("Opção Inválida");
     }
 
