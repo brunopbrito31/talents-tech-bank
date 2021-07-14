@@ -84,6 +84,10 @@ public class ServicosDaConta {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         System.out.println("Olá Cliente Rainbow Bank !");
         System.out.println("Extrato Bancário - Dados da conta: "+contaBancaria);
+        if(contaBancaria.getClass().equals(ContaCorrente.class)) System.out.println("Limite Cheque Especial R$: "
+                +String.format("%.2f",((ContaCorrente) contaBancaria).getLimiteChequeEspecial())+" Saldo Cheque Especial R$: "+
+                String.format("%.2f",((ContaCorrente) contaBancaria).getSaldoChequeEspecial())+" Débito de limite emergencial R$: "+
+                String.format("%.2f",(((ContaCorrente) contaBancaria).getAdicionalChequeEspecial()-((ContaCorrente) contaBancaria).getSaldoAdicionalChequeEspecial())));
         System.out.println("Data e Hora: "+sdf.format(Date.from(Instant.now())));
         System.out.println("Movimentações*********************************");
         System.out.println("Tipo - Valor Movimentado - Data da Transação: ");

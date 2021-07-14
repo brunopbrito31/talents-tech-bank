@@ -23,14 +23,7 @@ public abstract class ContaBancaria {
         movimentacoes = new ArrayList<>();
         movimentacoes.add(new Transacao("Criacao da Conta",saldo, Date.from(Instant.now())));
     }
-    public void depositar(double valor){
-        if(valor > 0){
-            saldo = saldo + valor;
-            System.out.println("Valor de R$:"+String.format("%.2f",valor)+" foi depositado com sucesso!");
-        }else{
-            throw new IllegalArgumentException("Valor inválido");
-        }
-    }
+    public abstract void depositar(double valor);
 
     public abstract double sacar(double valor);
 

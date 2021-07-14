@@ -1,7 +1,6 @@
 package projetobanco.model.entities.contas;
 import projetobanco.model.entities.Banco;
 import projetobanco.model.entities.usuarios.Cliente;
-import java.util.stream.Collectors;
 
 public class ContaCorrente extends ContaBancaria{
 
@@ -20,25 +19,64 @@ public class ContaCorrente extends ContaBancaria{
         saldoAdicionalChequeEspecial = 0;
     }
 
+    @Override
+    public void depositar(double valor){
+        double valor1;
+        if(valor > 0 && (limiteChequeEspecial == saldoChequeEspecial)){
+            setSaldo(getSaldo()+valor);
+            System.out.println("Valor de R$:"+String.format("%.2f",valor)+" foi depositado com sucesso!");
+        }else if(valor > 0 && limiteChequeEspecial != saldoChequeEspecial){  // condição que repõe o cheque especial ao depositar um valor
+            if(adicionalChequeEspecial != saldoAdicionalChequeEspecial){
+                valor1 = valor - (adicionalChequeEspecial- saldoAdicionalChequeEspecial);
+                if(valor1 > 0){
+                    saldoAdicionalChequeEspecial = adicionalChequeEspecial;
+                    saldoChequeEspecial = saldoChequeEspecial+valor1;
+                    if(saldoChequeEspecial > limiteChequeEspecial){
+                        setSaldo(limiteChequeEspecial-saldoChequeEspecial);
+                    }
+                }else{
+                    saldoAdicionalChequeEspecial = saldoAdicionalChequeEspecial + valor;
+                }
+            }
+        }else{
+            throw new IllegalArgumentException("Valor inválido");
+        }
+    }
+
     @Override // Verificar os calculos
     public double sacar(double valor) {
         if(valor > saldoTotal){ // acima do saldo total
             throw new IllegalArgumentException("Saldo insuficiente!");
         }else if(valor < 0){
             throw new IllegalArgumentException("Valor incorreto!");
-        }else if(valor > getSaldo() && valor <= saldoComCheque){ // valor abaixo  ou igual do total com cheque
+        }else if(valor > getSaldo() && valor <= (getSaldo()+saldoChequeEspecial)){ // valor abaixo  ou igual do total com cheque
             saldoChequeEspecial = saldoChequeEspecial - (valor - getSaldo());
             setSaldo(0);
             System.out.println("Seu cheque especial foi utilizado");
+            System.out.println("Saldo após a transação: R$"+String.format("%.2f",getSaldo())+" Cheque especial disponível: R$"+String.format("%.2f",getSaldoChequeEspecial()));
             return saldoChequeEspecial;
         }else if(valor > saldoComCheque && valor <= saldoTotal){ // valor acima do cheque especial e dentro do adiconal
             saldoAdicionalChequeEspecial = saldoTotal - valor; // verificar esta condição
             saldoChequeEspecial = 0;
             setSaldo(0);
             System.out.println("Seu adicional do cheque foi utilizado");
+            System.out.println("Foi utilizado R$: "+String.format("%.2f",(adicionalChequeEspecial-saldoAdicionalChequeEspecial))+" de adicional de saldo emergencial");
             return saldoAdicionalChequeEspecial;
+        }else if(valor <= getSaldo() && valor > 0){
+            setSaldo(getSaldo()-valor);
+            return getSaldo();
+        }else if(getSaldo() == 0 && saldoChequeEspecial > valor){
+            saldoChequeEspecial = saldoChequeEspecial - valor;
+            System.out.println("Seu cheque especial foi utilizado");
+            System.out.println("Saldo da conta R$: 00,00 Cheque especial R$: "+String.format("%.2f",saldoChequeEspecial));
+            return saldoChequeEspecial;
+        }else if(getSaldo() == 0 && saldoChequeEspecial == 0 && saldoAdicionalChequeEspecial > valor){
+            saldoAdicionalChequeEspecial = saldoAdicionalChequeEspecial - valor;
+            System.out.println("Foi utilizado R$: "+String.format("%.2f",adicionalChequeEspecial-saldoAdicionalChequeEspecial)+" do seu limite emergencial");
+            return saldoAdicionalChequeEspecial;
+        }else{
+            throw new IllegalArgumentException("Saldo insuficiente!");
         }
-        return 0;
     }
 
     public double getLimiteChequeEspecial() {
@@ -81,15 +119,17 @@ public class ContaCorrente extends ContaBancaria{
         this.saldoTotal = saldoTotal;
     }
 
-    // erro na validação
+
     public void adicionarLimiteChequeEspecial(double valor, int senhaGerente){
         // verificar se há um gerente com a senha
         Boolean condicao = Banco.getGerentes().stream().filter(x -> x.getIdentificador().equals(senhaGerente)).count() > 0;
         if(condicao){
             setLimiteChequeEspecial(valor);
-            setSaldoAdicionalChequeEspecial(valor * 0.35);
+            setAdicionalChequeEspecial(valor * 0.35);
             saldoChequeEspecial = limiteChequeEspecial;
             saldoAdicionalChequeEspecial = adicionalChequeEspecial;
+            saldoComCheque = getSaldo()+saldoChequeEspecial;
+            saldoTotal = getSaldo()+saldoChequeEspecial+saldoAdicionalChequeEspecial;
         }else{
             throw new IllegalArgumentException("Acesso negado!");
         }
@@ -100,7 +140,7 @@ public class ContaCorrente extends ContaBancaria{
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString())
                 .append("\n")
-                .append(" Tipo de Conta: ")
+                .append("Tipo de Conta: ")
                 .append("Corrente");
         return sb.toString();
     }

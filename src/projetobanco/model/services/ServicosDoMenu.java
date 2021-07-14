@@ -110,11 +110,16 @@ public class ServicosDoMenu {
                         int senhaAux = reader.nextInt();
                         reader.nextLine();
                             if(Banco.getGerentes().stream().filter(x -> x.getIdentificador().equals(senhaAux)).count() > 0){ // Verificação da senha
+                                System.out.print("Informe a conta que deseja adicionar o cheque especial: ");
+                                validarInteiro(reader);
+                                int contaInf = reader.nextInt();
+                                reader.nextLine();
+                                ContaCorrente contaBancaria1 = (ContaCorrente) ServicosDaConta.encontrarContaBancaria(contaInf);
                                 System.out.print("Digite o valor que deseja adicionar: ");
                                 validarDouble(reader);
                                 double valorAux1 = reader.nextDouble();
                                 reader.nextLine();
-                                ServicosDaConta.adicionarLimiteDeChequeEspecial((ContaCorrente) contaBancaria,senhaAux,valorAux1);
+                                ServicosDaConta.adicionarLimiteDeChequeEspecial((ContaCorrente) contaBancaria1,senhaAux,valorAux1);
                                 break;
                             }else{ // Caso a senha esteja incorreta
                                 throw new IllegalArgumentException("Acesso Negado!");

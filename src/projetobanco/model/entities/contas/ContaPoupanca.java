@@ -22,11 +22,21 @@ public class ContaPoupanca extends ContaBancaria{
     }
 
     @Override
+    public void depositar(double valor){
+        if(valor > 0){
+            setSaldo(getSaldo()+valor);
+            System.out.println("Valor de R$:"+String.format("%.2f",valor)+" foi depositado com sucesso!");
+        }else{
+            throw new IllegalArgumentException("Valor inválido");
+        }
+    }
+
+    @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString())
                 .append("\n")
-                .append(" Tipo de Conta: ")
+                .append("Tipo de Conta: ")
                 .append("Poupança");
         return sb.toString();
     }
