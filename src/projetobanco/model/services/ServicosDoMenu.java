@@ -150,7 +150,7 @@ public class ServicosDoMenu {
                     reader.nextLine();
                     ServicosDaConta.encerrarContaBancaria(numContaAux2);
                     break;
-                }else{
+                }else{ // implementar o realizar transferência entre contas validando se ambas existem
                     throw new IllegalArgumentException("Opção Inválida!");
                 }
             case 5: //sair do programa
