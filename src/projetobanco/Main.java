@@ -5,6 +5,6 @@ import projetobanco.model.entities.Banco;
 public class Main {
 
     public static void main(String[] args) {
-        Banco rainbowBank = new Banco();
+        Banco.inicializar();
     }
 }

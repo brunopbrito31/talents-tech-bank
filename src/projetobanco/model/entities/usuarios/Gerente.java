@@ -4,16 +4,17 @@ import java.util.Objects;
 
 public class Gerente extends Usuario{
 
-    private Integer identificador;
+    private int identificador;
 
     public Gerente(String nome, String telefone, int identificador) {
         super(nome, telefone);
-        identificador = identificador;
+        this.identificador = identificador;
     }
 
     public Integer getIdentificador() {
         return identificador;
     }
+
 
     public void setIdentificador(Integer identificador) {
         this.identificador = identificador;
@@ -32,4 +33,5 @@ public class Gerente extends Usuario{
     public int hashCode() {
         return Objects.hash(super.hashCode(), identificador);
     }
+
 }

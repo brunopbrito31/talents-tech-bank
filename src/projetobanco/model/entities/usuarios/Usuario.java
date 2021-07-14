@@ -41,4 +41,12 @@ public abstract class Usuario {
     public int hashCode() {
         return Objects.hash(nome, telefone);
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nome='" + nome + '\'' +
+                ", telefone='" + telefone + '\'' +
+                '}';
+    }
 }

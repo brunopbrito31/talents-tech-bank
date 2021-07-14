@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class ServicosDaConta {
 
+
     public static void encerrarContaBancaria(Integer numConta){
         ContaBancaria conta = ServicosDaConta.encontrarContaBancaria(numConta);
         if(conta.getClass().equals(ContaCorrente.class)){
@@ -137,4 +138,5 @@ public class ServicosDaConta {
         }
         return 0;
     }
+
 }

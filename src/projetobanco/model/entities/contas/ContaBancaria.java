@@ -66,7 +66,6 @@ public abstract class ContaBancaria {
         return movimentacoes;
     }
 
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
