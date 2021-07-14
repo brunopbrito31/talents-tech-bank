@@ -74,7 +74,7 @@ public class ServicosDoMenu {
             System.out.println("Opções:");
             System.out.println("1. Para adicionar uma nova conta");
             if(contaBancaria.getClass().equals(ContaCorrente.class)) listarOpcoesContaCorrente();
-            System.out.println("3. Para escolher outra conta pelo número");
+            System.out.println("3. Verificar movimentação de conta pelo número");
             System.out.println("4. Para encerrar uma conta");
         }else{
             System.out.println("MENU DE OPERAÇÕES********************");
@@ -131,7 +131,8 @@ public class ServicosDoMenu {
                     validarInteiro(reader);
                     int numContaAux = reader.nextInt();
                     reader.nextLine();
-                    ServicosDaConta.encontrarContaBancaria(numContaAux);
+                    ContaBancaria contaa = ServicosDaConta.encontrarContaBancaria(numContaAux);
+                    contaa.imprimirMovimentacoes();
                 }else{// Cliente - Realizar depósito
                     System.out.println("Digite o valor que deseja depositar: ");
                     validarDouble(reader);
