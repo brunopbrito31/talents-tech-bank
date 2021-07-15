@@ -18,8 +18,6 @@ public class ServicosDoMenu {
         Scanner reader = new Scanner(System.in);
         Boolean gerente = false;
 
-
-
         int n = 0;
         while(n == 0){
             try{
@@ -80,6 +78,8 @@ public class ServicosDoMenu {
             if(contaBancaria.getClass().equals(ContaCorrente.class)) listarOpcoesContaCorrente();
             System.out.println("3. Verificar movimentação de conta pelo número");
             System.out.println("4. Para encerrar uma conta");
+            System.out.println("5. Listar as contas inativas");
+
         }else{
             System.out.println("MENU DE OPERAÇÕES********************");
             System.out.println("Opções:");
@@ -87,8 +87,9 @@ public class ServicosDoMenu {
             System.out.println("2. Realizar saque");
             System.out.println("3. Realizar depósito");
             System.out.println("4. Realizar trasnferência");
+            System.out.println("5. Verificar o saldo da conta:");
         }
-        System.out.println("5. Para sair");
+        System.out.println("6. Para sair");
         System.out.print("Entre com a opção desejada: ");
     }
 
@@ -170,7 +171,18 @@ public class ServicosDoMenu {
                     ServicosDaConta.transferir(contaBancaria,contaDestino,valorTransf);
                     break;
                 }
-            case 5: //sair do programa
+            case 5:// Listar contas inativas
+                if(gerente){
+                    System.out.println("Contas Inativas");
+                    Banco.getContasInativas().forEach(System.out::println);
+                }else{
+                    System.out.println("O saldo atual da conta é de R$: "+String.format("%.2f",contaBancaria.getSaldo()));
+                    if(contaBancaria.getClass().equals(ContaCorrente.class)){
+                        System.out.println("Limite de Cheque especial R$:"+String.format("%.2f",((ContaCorrente) contaBancaria).getLimiteChequeEspecial()));
+                    }
+                }
+
+            case 6: //sair do programa
                 return 1;
         }
         return 0;
@@ -192,7 +204,7 @@ public class ServicosDoMenu {
         }
     }
     public static void validarOpcaoEscolhida(int opcao, ContaBancaria contaBancaria){
-        if(opcao <= 0 || opcao > 5){
+        if(opcao <= 0 || opcao > 6){
             throw new IllegalArgumentException("Opção Inválida!");
         }
     }

@@ -32,7 +32,7 @@ public class ContaCorrente extends ContaBancaria{
                     saldoAdicionalChequeEspecial = adicionalChequeEspecial;
                     saldoChequeEspecial = saldoChequeEspecial+valor1;
                     if(saldoChequeEspecial > limiteChequeEspecial){
-                        setSaldo(limiteChequeEspecial-saldoChequeEspecial);
+                        setSaldo(saldoChequeEspecial-limiteChequeEspecial);
                     }
                 }else{
                     saldoAdicionalChequeEspecial = saldoAdicionalChequeEspecial + valor;
@@ -119,9 +119,11 @@ public class ContaCorrente extends ContaBancaria{
         this.saldoTotal = saldoTotal;
     }
 
-
     public void adicionarLimiteChequeEspecial(double valor, int senhaGerente){
         // verificar se há um gerente com a senha
+        if(valor < 0){
+            throw new IllegalArgumentException ("Você não pode adicionar um valor negativo como limite");
+        }
         Boolean condicao = Banco.getGerentes().stream().filter(x -> x.getIdentificador().equals(senhaGerente)).count() > 0;
         if(condicao){
             setLimiteChequeEspecial(valor);

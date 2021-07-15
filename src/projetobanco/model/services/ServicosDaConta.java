@@ -20,6 +20,7 @@ public class ServicosDaConta {
            if(((ContaCorrente) conta).getSaldoChequeEspecial() == ((ContaCorrente) conta).getLimiteChequeEspecial() &&
            ((ContaCorrente) conta).getAdicionalChequeEspecial() == ((ContaCorrente) conta).getSaldoAdicionalChequeEspecial()){
                ServicosDaConta.sacar(conta.getSaldo(),conta);
+               Banco.getContasInativas().add(conta);
                Banco.getContas().remove(conta);
                System.out.println("Conta encerrada com sucesso!");
            }else{
@@ -27,6 +28,8 @@ public class ServicosDaConta {
            }
         }else{
             ServicosDaConta.sacar(conta.getSaldo(),conta);
+            conta.getMovimentacoes().add(new Transacao("Conta Desativada",-1 * conta.getSaldo(),Date.from(Instant.now()) ));
+            Banco.getContasInativas().add(conta);
             Banco.getContas().remove(conta);
             System.out.println("Conta encerrada com sucesso!");
         }
@@ -117,6 +120,9 @@ public class ServicosDaConta {
         System.out.print("Digite o saldo inicial: ");
         double saldoInicial = reader.nextDouble();
         reader.nextLine();
+        if(saldoInicial < 0){
+            throw new IllegalArgumentException("Valor deve ser positivo ou nulo");
+        }
         System.out.print("Deseja criar qual tipo de conta? 1.Corrente | 2.Poupança: ");
         int opcao = reader.nextInt();
         reader.nextLine();
