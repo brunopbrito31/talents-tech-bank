@@ -12,11 +12,8 @@ public class Banco {
 
     private static final String NOME_BANCO = "Rainbow Bank";
 
-    public Banco(){
-        System.out.println("BANCO: "+NOME_BANCO+"  ***********************************");
-    }
-
     public static void inicializar(){
+        System.out.println("BANCO: "+NOME_BANCO+"  ***********************************");
         setContas(new ArrayList<>());
         setGerentes(new ArrayList<>());
         setContasInativas(new ArrayList<>());
