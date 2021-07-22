@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        ServicoDeMenu.cadastrarNovoProduto();
+        ServicoDeMenu.cadastrarNovosProdutos();
 
 
     }
