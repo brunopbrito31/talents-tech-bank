@@ -9,6 +9,7 @@ public class ItemVenda {
     private Double valorUnitario;
     private Double valorTotal;
     private Produto produto;
+    private Venda venda;
 
     public ItemVenda(Long id, Double quantidade, Double valorUnitario, Double valorTotal, Produto produto) {
         this.id = id;
@@ -16,6 +17,7 @@ public class ItemVenda {
         this.valorUnitario = valorUnitario;
         this.valorTotal = valorTotal;
         this.produto = produto;
+        this.venda = null; // porque o item de venda nasce antes da venda, o item de venda só recebe uma venda associada após a mesma ser criada
     }
 
     public Long getId() {
@@ -56,6 +58,14 @@ public class ItemVenda {
 
     public void setProduto(Produto produto) {
         this.produto = produto;
+    }
+
+    public Venda getVenda() {
+        return venda;
+    }
+
+    public void setVenda(Venda venda) {
+        this.venda = venda;
     }
 
     @Override

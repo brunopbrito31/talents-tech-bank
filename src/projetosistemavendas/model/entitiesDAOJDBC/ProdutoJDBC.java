@@ -17,7 +17,6 @@ public class ProdutoJDBC implements ProdutoDAO {
         this.conn = conn;
     }
 
-
     @Override
     public void inserir(Produto produto) {
         PreparedStatement st = null;
@@ -162,4 +161,27 @@ public class ProdutoJDBC implements ProdutoDAO {
             throw new DbException("Error: "+e.getMessage());
         }
     }
+
+    @Override
+    public Produto procurarPeloCodigoDeBarras(String cod) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try{
+            st = conn.prepareStatement(
+                    "SELECT * FROM tb_produto " +
+                            "WHERE tb_produto.codigo_de_barras = ?");
+            st.setString(1, cod);
+            rs = st.executeQuery();
+            if(rs.next()){
+                return instanciarProduto(rs);
+            }
+            return null;
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            Db.closeStatement(st);
+            Db.closeResultSet(rs);
+        }
+    }
+
 }

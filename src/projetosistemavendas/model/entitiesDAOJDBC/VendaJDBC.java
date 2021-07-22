@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+// Realizar as implementações
 public class VendaJDBC implements VendaDAO {
 
     private Connection conn;

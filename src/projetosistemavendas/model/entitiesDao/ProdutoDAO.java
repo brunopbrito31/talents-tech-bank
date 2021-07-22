@@ -11,5 +11,6 @@ public interface ProdutoDAO {
     void deletarPeloId(Long id);
     Produto procurarPeloId(Long id);
     List<Produto> buscarTodos();
+    Produto procurarPeloCodigoDeBarras(String cod);
 
 }
