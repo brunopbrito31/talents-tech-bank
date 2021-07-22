@@ -57,13 +57,41 @@ public class ProdutoJDBC implements ProdutoDAO {
 
     @Override
     public void atualizar(Produto produto) {
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement(
+              "UPDATE tb_produto " +
+                      "SET descricao = ?, valor_custo = ?, peso_unitario = ?, unidade_medida_peso = ?, codigo_de_barras = ?, valor_venda =? " +
+                      "WHERE id = ?");
+            st.setString(1, produto.getDescricao());
+            st.setDouble(2, produto.getValorCusto());
+            st.setDouble(3, produto.getValorUnitario());
+            st.setString(4, produto.getUnidadeMedidaPeso());
+            st.setString(5, produto.getCodigoDeBarras());
+            st.setDouble(6, produto.getValorDaVenda());
 
+            st.executeUpdate();
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            Db.closeStatement(st);
+        }
 
     }
 
     @Override
     public void deletarPeloId(Long id) {
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement("DELETE FROM tb_produto WHERE id = ?");
 
+            st.setLong(1, id);
+            st.executeUpdate();
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            Db.closeStatement(st);
+        }
     }
 
     @Override
@@ -77,15 +105,7 @@ public class ProdutoJDBC implements ProdutoDAO {
             st.setLong(1, id);
             rs = st.executeQuery();
             if(rs.next()){
-                Produto produto = new Produto();
-                produto.setId(rs.getLong("id"));
-                produto.setDescricao(rs.getString("descricao"));
-                produto.setValorCusto(rs.getDouble("valor_custo"));
-                produto.setValorUnitario(rs.getDouble("peso_unitario"));
-                produto.setUnidadeMedidaPeso(rs.getString("unidade_medida_peso"));
-                produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
-                produto.setValorDaVenda(rs.getDouble("valor_venda"));
-                return produto;
+                return instanciarProduto(rs);
             }
             return null;
         }catch (SQLException e){
@@ -124,6 +144,22 @@ public class ProdutoJDBC implements ProdutoDAO {
         } finally {
             Db.closeResultSet(rs);
             Db.closeStatement(st);
+        }
+    }
+
+    public static Produto instanciarProduto(ResultSet rs){
+        Produto produto = new Produto();
+        try{
+            produto.setId(rs.getLong("id"));
+            produto.setDescricao(rs.getString("descricao"));
+            produto.setValorCusto(rs.getDouble("valor_custo"));
+            produto.setValorUnitario(rs.getDouble("peso_unitario"));
+            produto.setUnidadeMedidaPeso(rs.getString("unidade_medida_peso"));
+            produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
+            produto.setValorDaVenda(rs.getDouble("valor_venda"));
+            return produto;
+        }catch (SQLException e){
+            throw new DbException("Error: "+e.getMessage());
         }
     }
 }
