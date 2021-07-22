@@ -1,9 +1,9 @@
 package projetosistemavendas.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.*;
+import java.util.Properties;
 
 public class Db {
 
@@ -11,12 +11,14 @@ public class Db {
 
     private static String urlPostgres = "jdbc:postgresql://talents-tech-bank.cvitjixrebr2.us-east-1.rds.amazonaws.com/db_bruno_brito";
     private static String usuario = "brunopbrito31";
-    private static String senha;
+    private static String senha =
 
-    public static Connection getConnection(String senhaBanco){ // verificar se preciso manter a senha
+    public static Connection getConnection(){ // verificar se preciso manter a senha
         if(conn == null){
             try{
-                Connection conn = DriverManager.getConnection(urlPostgres,usuario,senhaBanco);
+                Properties props = loadProperties();
+                String url = props.getProperty("urlPostgres");
+                Connection conn = DriverManager.getConnection(url,props);
                 return conn;
 
             } catch (SQLException e) {
@@ -24,6 +26,16 @@ public class Db {
             }
         }else {
             return conn;
+        }
+    }
+
+    public static Properties loadProperties() {
+        try(FileInputStream fs = new FileInputStream("db.properties")){
+            Properties props = new Properties();
+            props.load(fs);
+            return props;
+        }catch (IOException e){
+            throw new DbException(e.getMessage());
         }
     }
 
@@ -38,7 +50,23 @@ public class Db {
     }
 
     public static void closeStatement (Statement st) {
+        if (st != null){
+            try{
+                st.close();
+            }catch (SQLException e){
+                throw new DbException(e.getMessage());
+            }
+        }
+    }
 
+    public static void closeResultSet (ResultSet rs){
+        if (rs != null){
+            try{
+                rs.close();
+            }catch (SQLException e){
+                throw new DbException(e.getMessage());
+            }
+        }
     }
 
 }
