@@ -13,7 +13,5 @@ public interface ItemVendaDAO {
 
     void inserirVenda(Venda venda);
 
-    
-
 
 }

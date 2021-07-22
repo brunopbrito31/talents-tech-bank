@@ -10,9 +10,6 @@ import java.sql.Statement;
 public class Main {
 
     public static void main(String[] args) {
-        String senha = System.getenv("l_pssdpsql");
-        System.out.println("Senha da variavel : "+senha);
-
 
         Connection conn = Db.getConnection();
 

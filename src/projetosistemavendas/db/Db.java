@@ -9,10 +9,6 @@ public class Db {
 
     private static Connection conn;
 
-    private static String urlPostgres = "jdbc:postgresql://talents-tech-bank.cvitjixrebr2.us-east-1.rds.amazonaws.com/db_bruno_brito";
-    private static String usuario = "brunopbrito31";
-    private static String senha =
-
     public static Connection getConnection(){ // verificar se preciso manter a senha
         if(conn == null){
             try{
@@ -29,8 +25,8 @@ public class Db {
         }
     }
 
-    public static Properties loadProperties() {
-        try(FileInputStream fs = new FileInputStream("db.properties")){
+    private static Properties loadProperties() {
+        try(FileInputStream fs = new FileInputStream("src/projetosistemavendas/db.properties")){
             Properties props = new Properties();
             props.load(fs);
             return props;
