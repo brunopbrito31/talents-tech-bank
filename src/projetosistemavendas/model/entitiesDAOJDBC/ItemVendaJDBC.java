@@ -3,10 +3,13 @@ package projetosistemavendas.model.entitiesDAOJDBC;
 import projetosistemavendas.db.Db;
 import projetosistemavendas.db.DbException;
 import projetosistemavendas.model.entities.ItemVenda;
+import projetosistemavendas.model.entities.Produto;
+import projetosistemavendas.model.entities.Venda;
 import projetosistemavendas.model.entitiesDao.ItemVendaDAO;
 
-import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemVendaJDBC implements ItemVendaDAO {
 
@@ -107,6 +110,46 @@ public class ItemVendaJDBC implements ItemVendaDAO {
             return null; /// alterar esse código
         }catch (SQLException e){
             throw new DbException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<ItemVenda> procurarPelaVenda(Venda venda) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = conn.prepareStatement(
+                    "SELECT tb_item_venda.*, tb_produto.descricao, tb_produto.valor_custo, " +
+                            "tb_produto.peso_unitario, tb_produto.unidade_medida_peso, codigo_de_barras, " +
+                            "valor_venda FROM tb_item_venda INNER JOIN tb_produto " +
+                            "ON tb_item_venda.id_produto = tb_produto.id " +
+                            "WHERE tb.item_venda.id_venda = ?");
+            st.setLong(1,venda.getId());
+            rs = st.executeQuery();
+            List<ItemVenda> itensVendas = new ArrayList<>();
+
+            while (rs.next()) {
+                ItemVenda itemVenda = new ItemVenda();
+                itemVenda.setId(rs.getLong("id"));
+                itemVenda.setVenda(venda);
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("tb_item_venda.id_produto"));
+                produto.setDescricao(rs.getString("tb_produto.descricao")); // talvez precise tirar o tb_produto
+                produto.setValorCusto(rs.getDouble("tb_produto.valor_custo"));
+                produto.setValorDaVenda(rs.getDouble("tb_produto.valor_venda"));
+                produto.setCodigoDeBarras(rs.getString("tb_produto.codigo_de_barras"));
+                itemVenda.setProduto(produto);
+                itemVenda.setQuantidade(rs.getDouble("tb_item_venda.quantidade"));
+                itemVenda.setValorUnitario(rs.getDouble("tb_item_venda.valor_unitario"));
+                itemVenda.setValorTotal(rs.getDouble("tb_intem_venda.valor_total"));
+                itensVendas.add(itemVenda);
+            }
+            return itensVendas;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            Db.closeResultSet(rs);
+            Db.closeStatement(st);
         }
     }
 }

@@ -16,7 +16,7 @@ public class Db {
                 String url = props.getProperty("urlPostgres");
                 Connection connection = DriverManager.getConnection(url,props);
                 conn = connection;
-                System.out.println("Conexão estabelecida com sucesso!");
+                //System.out.println("Conexão estabelecida com sucesso!");
                 return conn;
             } catch (SQLException e) {
                 throw new DbException("Erro na conexão: "+e.getMessage());

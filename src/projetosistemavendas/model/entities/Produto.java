@@ -2,6 +2,8 @@ package projetosistemavendas.model.entities;
 
 import java.util.Objects;
 
+
+//checar os atributos de pesagem
 public class Produto {
 
     private Long id;
@@ -23,6 +25,13 @@ public class Produto {
     }
 
     public Produto() {
+    }
+
+    public String exibirParaVenda(){
+        return  "Código de Barras: "+getCodigoDeBarras()+"\n"+
+                "Descrição do Produto: "+getDescricao()+"\n"+
+                "Vendido por: "+getUnidadeMedidaPeso()+"\n"+
+                "Valor por "+getUnidadeMedidaPeso()+" R$: "+String.format("%.2f",getValorUnitario())+"\n";
     }
 
     public Long getId() {

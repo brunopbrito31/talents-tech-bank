@@ -1,5 +1,6 @@
 package projetosistemavendas.model.entities;
 
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 public class ItemVenda {
@@ -11,6 +12,10 @@ public class ItemVenda {
     private Produto produto;
     private Venda venda;
 
+    public ItemVenda(){
+
+    }
+
     public ItemVenda(Long id, Double quantidade, Double valorUnitario, Double valorTotal, Produto produto) {
         this.id = id;
         this.quantidade = quantidade;
@@ -18,6 +23,11 @@ public class ItemVenda {
         this.valorTotal = valorTotal;
         this.produto = produto;
         this.venda = null; // porque o item de venda nasce antes da venda, o item de venda só recebe uma venda associada após a mesma ser criada
+    }
+
+    public String exibirItemVenda(){
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return "Produto: "+produto.exibirParaVenda();
     }
 
     public Long getId() {
