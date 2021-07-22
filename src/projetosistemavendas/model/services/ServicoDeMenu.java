@@ -15,11 +15,8 @@ public class ServicoDeMenu {
         Scanner reader = new Scanner(System.in);
         ProdutoDAO prod = FabricaDAO.criarProdutoDAO();
         System.out.println("Cadastro de Produto*-*-*-*-*-*-*-*-*-*-*-*-*-*-* ");
-        //realizar a letura dos dados, a começar pelo código de barras para verificar se já existe um produto
-        // com o mesmo código de barras
         System.out.print("Digite quantos produtos deseja cadastrar: ");
-        int quantidadeCadastros = reader.nextInt();
-        reader.nextLine();
+        int quantidadeCadastros = validacaoInteiro(reader);
         while(quantidadeCadastros > 0){
             System.out.print("Digite o código de barras do produto que deseja cadastrar: ");
             String codBarras = reader.nextLine().trim();
@@ -29,16 +26,13 @@ public class ServicoDeMenu {
                     System.out.print("Digite a descrição do produto: ");
                     String descricao = reader.nextLine();
                     System.out.print("Digite o valor de custo: ");
-                    Double valorCusto = reader.nextDouble();
-                    reader.nextLine();
+                    Double valorCusto = validacaoDouble(reader);
                     System.out.print("Digite o peso unitário: ");
-                    Double pesoUnitario = reader.nextDouble();
-                    reader.nextLine();
+                    Double pesoUnitario = validacaoDouble(reader);
                     System.out.print("Digite a unidade de medida de peso: ");
                     String unidadeMedidaPeso = reader.nextLine();
                     System.out.print("Digite o valor de venda: ");
-                    Double valorVenda = reader.nextDouble();
-                    reader.nextLine();
+                    Double valorVenda = validacaoDouble(reader);
                     Produto produto = new Produto(null,descricao,valorCusto,pesoUnitario,unidadeMedidaPeso,codBarras,valorVenda);
                     prod.inserir(produto);
                     System.out.println("Produto cadastrado com sucesso!");
@@ -48,7 +42,23 @@ public class ServicoDeMenu {
             }
             quantidadeCadastros --;
         }
+    }
 
+    public static Integer validacaoInteiro(Scanner reader){
+        Integer numero;
+        if(!reader.hasNextInt())throw new IllegalArgumentException("Entrada deve ser um número inteiro");
+        numero = reader.nextInt();
+        reader.nextLine();
+        if(numero < 0) throw new IllegalArgumentException("Entrada deve ser 0 ou positiva");
+        return numero;
+    }
 
+    public static Double validacaoDouble(Scanner reader){
+        Double numero;
+        if(!reader.hasNextDouble())throw new IllegalArgumentException("Entrada deve ser um número");
+        numero = reader.nextDouble();
+        reader.nextLine();
+        if(numero < 0) throw new IllegalArgumentException("Entrada deve ser 0 ou positiva");
+        return numero;
     }
 }
