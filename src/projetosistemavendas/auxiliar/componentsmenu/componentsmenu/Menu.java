@@ -108,6 +108,7 @@ public class Menu {
                         System.out.println();
                         System.out.println("Itens do carrinho:");
                         vendaAtual.exibirTodosItens();
+                        System.out.println("Valor total da Compra R$: "+vendaAtual.calcularTotal());
                         System.out.println();
                     }
                 }

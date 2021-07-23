@@ -37,6 +37,14 @@ public class Venda {
         FabricaDAO.criarVendaDAO().atualizar(this);
     }
 
+    public BigDecimal calcularTotal(){
+        BigDecimal total = BigDecimal.valueOf(0d);
+        for(ItemVenda x: itensVenda){
+            total = total.add(x.getValorTotal());
+        }
+        return total;
+    }
+
     public void exibirTodosItens() {
         itensVenda.forEach(ItemVenda::exibirItemNaVenda);
     }
