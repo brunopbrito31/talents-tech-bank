@@ -1,7 +1,6 @@
 package projetosistemavendas.model.entities;
 
 import projetosistemavendas.model.entitiesDao.FabricaDAO;
-import projetosistemavendas.model.entitiesDao.VendaDAO;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -38,11 +37,7 @@ public class Venda {
     }
 
     public BigDecimal calcularTotal(){
-        BigDecimal total = BigDecimal.valueOf(0d);
-        for(ItemVenda x: itensVenda){
-            total = total.add(x.getValorTotal());
-        }
-        return total;
+        return valor;
     }
 
     public void exibirTodosItens() {

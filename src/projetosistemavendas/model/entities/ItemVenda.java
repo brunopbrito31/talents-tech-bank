@@ -47,6 +47,7 @@ public class ItemVenda {
             itemVendaExistente.get().setQuantidade(itemVendaExistente.get().getQuantidade().add(itemVenda.getQuantidade())); // adicionei a quantidade do atual
             itemVendaExistente.get().setValorTotal(itemVendaExistente.get().getValorTotal().add(itemVenda.getValorTotal())); // adiciona o valor total ao existnte
             if (itemVendaExistente.isPresent()) {
+                itemVendaExistente.get().getVenda().setValor(itemVendaExistente.get().getVenda().getValor().add(itemVenda.getValorTotal()));
                 itemVendaDAO.atualizar(itemVendaExistente.get());
             }
             return itemVendaExistente.get();
