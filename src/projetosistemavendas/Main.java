@@ -1,17 +1,9 @@
 package projetosistemavendas;
 
+import projetosistemavendas.auxiliar.componentsmenu.componentsmenu.Menu;
 
-
-
-import projetosistemavendas.model.services.ServicoDeMenu;
-
-import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
-        ServicoDeMenu.cadastrarNovosProdutos();
-
-
-    }
+    public static void main(String[] args) { Menu.iniciar(); /*Let's Go!*/}
 }

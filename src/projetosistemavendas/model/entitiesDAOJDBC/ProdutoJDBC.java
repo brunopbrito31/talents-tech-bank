@@ -28,11 +28,11 @@ public class ProdutoJDBC implements ProdutoDAO {
                             "(?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             st.setString(1, produto.getDescricao());
-            st.setDouble(2, produto.getValorCusto());
-            st.setDouble(3, produto.getValorUnitario());
+            st.setBigDecimal(2, produto.getValorCusto());
+            st.setBigDecimal(3, produto.getPesoUnitario());
             st.setString(4, produto.getUnidadeMedidaPeso());
             st.setString(5, produto.getCodigoDeBarras());
-            st.setDouble(6, produto.getValorDaVenda());
+            st.setBigDecimal(6, produto.getValorDaVenda());
 
             int linhasAfetadas = st.executeUpdate();
 
@@ -63,11 +63,11 @@ public class ProdutoJDBC implements ProdutoDAO {
                       "SET descricao = ?, valor_custo = ?, peso_unitario = ?, unidade_medida_peso = ?, codigo_de_barras = ?, valor_venda =? " +
                       "WHERE id = ?");
             st.setString(1, produto.getDescricao());
-            st.setDouble(2, produto.getValorCusto());
-            st.setDouble(3, produto.getValorUnitario());
+            st.setBigDecimal(2, produto.getValorCusto());
+            st.setBigDecimal(3, produto.getPesoUnitario());
             st.setString(4, produto.getUnidadeMedidaPeso());
             st.setString(5, produto.getCodigoDeBarras());
-            st.setDouble(6, produto.getValorDaVenda());
+            st.setBigDecimal(6, produto.getValorDaVenda());
 
             st.executeUpdate();
         }catch (SQLException e){
@@ -90,6 +90,30 @@ public class ProdutoJDBC implements ProdutoDAO {
             throw new DbException(e.getMessage());
         }finally {
             Db.closeStatement(st);
+        }
+    }
+
+    @Override
+    public Boolean verificarSeExiste(String codBarras) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try{
+            st = conn.prepareStatement(
+                    "SELECT count(codigo_de_barras) " +
+                            "FROM tb_produto " +
+                            "WHERE codigo_de_barras = ?"
+            );
+            st.setString(1,codBarras);
+            rs = st.executeQuery();
+            if(rs.next()){
+                if (rs.getInt("count") > 0){
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
         }
     }
 
@@ -130,10 +154,9 @@ public class ProdutoJDBC implements ProdutoDAO {
                 produto.setId(rs.getLong("id"));
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
-                ;
-                produto.setValorCusto(rs.getDouble("valor_custo"));
-                produto.setValorDaVenda(rs.getDouble("valor_venda"));
-                produto.setValorUnitario(rs.getDouble("peso_unitario"));
+                produto.setValorCusto(rs.getBigDecimal("valor_custo"));
+                produto.setValorDaVenda(rs.getBigDecimal("valor_venda"));
+                produto.setPesoUnitario((rs.getBigDecimal("peso_unitario")));
                 produto.setUnidadeMedidaPeso(rs.getString("unidade_medida_peso"));
                 produtos.add(produto);
             }
@@ -151,11 +174,11 @@ public class ProdutoJDBC implements ProdutoDAO {
         try{
             produto.setId(rs.getLong("id"));
             produto.setDescricao(rs.getString("descricao"));
-            produto.setValorCusto(rs.getDouble("valor_custo"));
-            produto.setValorUnitario(rs.getDouble("peso_unitario"));
+            produto.setValorCusto(rs.getBigDecimal("valor_custo"));
+            produto.setPesoUnitario(rs.getBigDecimal("peso_unitario"));
             produto.setUnidadeMedidaPeso(rs.getString("unidade_medida_peso"));
             produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
-            produto.setValorDaVenda(rs.getDouble("valor_venda"));
+            produto.setValorDaVenda(rs.getBigDecimal("valor_venda"));
             return produto;
         }catch (SQLException e){
             throw new DbException("Error: "+e.getMessage());

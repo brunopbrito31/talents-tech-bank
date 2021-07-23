@@ -1,5 +1,9 @@
 package projetosistemavendas.model.entities;
 
+import projetosistemavendas.model.entitiesDao.FabricaDAO;
+
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -8,17 +12,17 @@ public class Produto {
 
     private Long id;
     private String descricao;
-    private Double valorCusto;
-    private Double valorUnitario;
+    private BigDecimal valorCusto;
+    private BigDecimal pesoUnitario;
     private String unidadeMedidaPeso;
     private String codigoDeBarras;
-    private Double valorDaVenda;
+    private BigDecimal valorDaVenda;
 
-    public Produto(Long id, String descricao, double valorCusto, double valorUnitario, String unidadeMedidaPeso, String codigoDeBarras, double valorDaVenda) {
+    public Produto(Long id, String descricao, BigDecimal valorCusto, BigDecimal pesoUnitario, String unidadeMedidaPeso, String codigoDeBarras, BigDecimal valorDaVenda) {
         this.id = id;
         this.descricao = descricao;
         this.valorCusto = valorCusto;
-        this.valorUnitario = valorUnitario;
+        this.pesoUnitario = pesoUnitario;
         this.unidadeMedidaPeso = unidadeMedidaPeso;
         this.codigoDeBarras = codigoDeBarras;
         this.valorDaVenda = valorDaVenda;
@@ -27,12 +31,40 @@ public class Produto {
     public Produto() {
     }
 
-    public String exibirParaVenda(){
-        return  "Código de Barras: "+getCodigoDeBarras()+"\n"+
-                "Descrição do Produto: "+getDescricao()+"\n"+
-                "Vendido por: "+getUnidadeMedidaPeso()+"\n"+
-                "Valor por "+getUnidadeMedidaPeso()+" R$: "+String.format("%.2f",getValorUnitario())+"\n";
+    public void cadastrarNovoProduto() {
+        FabricaDAO.criarProdutoDAO().inserir(this);
     }
+
+    public static Boolean verificarExistencia(String codigoDeBarras) {
+        return FabricaDAO.criarProdutoDAO().verificarSeExiste(codigoDeBarras);
+    }
+
+    public static List<Produto> buscarListaProdutos() {
+        return FabricaDAO.criarProdutoDAO().buscarTodos();
+    }
+
+    public static void exibirTodosProdutosVenda() {
+        System.out.println();
+        List<Produto> produtos = Produto.buscarListaProdutos();
+        produtos.forEach(Produto::exibirParaVenda);
+    }
+
+    public static Produto buscarProdutoPorCod(String codigoDeBarras) {
+        return FabricaDAO.criarProdutoDAO().procurarPeloCodigoDeBarras(codigoDeBarras);
+    }
+
+    public void removerProduto() {
+        FabricaDAO.criarProdutoDAO().deletarPeloId(this.getId());
+    }
+
+    public void exibirParaVenda() {
+        String exib = "Código de Barras: " + getCodigoDeBarras() + "\n" +
+                "Descrição do Produto: " + getDescricao() + "\n" +
+                "Vendido por: " + getUnidadeMedidaPeso() + "\n" +
+                "Valor por " + getPesoUnitario() + " R$: " + String.format("%.2f", getValorDaVenda()) + "\n";
+        System.out.println(exib);
+    }
+
 
     public Long getId() {
         return id;
@@ -50,20 +82,20 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public double getValorCusto() {
+    public BigDecimal getValorCusto() {
         return valorCusto;
     }
 
-    public void setValorCusto(double valorCusto) {
+    public void setValorCusto(BigDecimal valorCusto) {
         this.valorCusto = valorCusto;
     }
 
-    public double getValorUnitario() {
-        return valorUnitario;
+    public BigDecimal getPesoUnitario() {
+        return pesoUnitario;
     }
 
-    public void setValorUnitario(double valorUnitario) {
-        this.valorUnitario = valorUnitario;
+    public void setPesoUnitario(BigDecimal valorUnitario) {
+        this.pesoUnitario = valorUnitario;
     }
 
     public String getUnidadeMedidaPeso() {
@@ -82,11 +114,11 @@ public class Produto {
         this.codigoDeBarras = codigoDeBarras;
     }
 
-    public double getValorDaVenda() {
+    public BigDecimal getValorDaVenda() {
         return valorDaVenda;
     }
 
-    public void setValorDaVenda(double valorDaVenda) {
+    public void setValorDaVenda(BigDecimal valorDaVenda) {
         this.valorDaVenda = valorDaVenda;
     }
 
@@ -109,7 +141,7 @@ public class Produto {
                 "id=" + id +
                 ", descricao='" + descricao + '\'' +
                 ", valorCusto=" + valorCusto +
-                ", valorUnitario=" + valorUnitario +
+                ", pesoUnitario=" + pesoUnitario +
                 ", unidadeMedidaPeso='" + unidadeMedidaPeso + '\'' +
                 ", codigoDeBarras='" + codigoDeBarras + '\'' +
                 ", valorDaVenda=" + valorDaVenda +

@@ -7,9 +7,10 @@ import projetosistemavendas.model.entities.Venda;
 import projetosistemavendas.model.entitiesDao.VendaDAO;
 
 import java.sql.*;
+import java.time.Instant;
 import java.util.List;
 
-// Realizar as implementações
+// Realizar as implementações para expansão do projeto
 public class VendaJDBC implements VendaDAO {
 
     private Connection conn;
@@ -28,7 +29,7 @@ public class VendaJDBC implements VendaDAO {
                             "VALUES " +
                             "(?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            st.setDouble(1, venda.getValor());
+            st.setBigDecimal(1, venda.getValor());
             st.setDate(2, (Date) venda.getDataHora()); // verificar se o cast vai funcionar ou se precisarei de mais conversões
 
             int linhasAfetadas = st.executeUpdate();
@@ -52,17 +53,29 @@ public class VendaJDBC implements VendaDAO {
         } finally {
             Db.closeStatement(st);
         }
-
     }
 
     @Override
     public void atualizar(Venda venda) {
-
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement(
+                    "UPDATE tb_venda " +
+                            "SET valor = ? " +
+                            "WHERE id = ?");
+            st.setBigDecimal(1, venda.getValor());
+            //st.setTimestamp(2, Timestamp.from(Instant.from(venda.getDataHora().toInstant())));
+            st.setLong(2, venda.getId());
+            st.executeUpdate();
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            Db.closeStatement(st);
+        }
     }
 
     @Override
     public void deletarPeloId(Long id) {
-
     }
 
     @Override
@@ -102,10 +115,45 @@ public class VendaJDBC implements VendaDAO {
         try{
             venda.setId(rs.getLong("id"));
             venda.setDataHora(rs.getTimestamp("data_hora"));
-            venda.setValor(rs.getDouble("valor"));
+            venda.setValor(rs.getBigDecimal("valor"));
             return venda;
         }catch (SQLException e){
             throw new DbException("Error: "+e.getMessage());
+        }
+    }
+
+
+    public Long inserirAberturaVenda(Venda venda) {
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement(
+                    "INSERT INTO tb_venda " +
+                            "(valor, data_hora) " +
+                            "VALUES " +
+                            "(?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            st.setBigDecimal(1, venda.getValor());
+            st.setTimestamp(2, Timestamp.from(Instant.now()));
+
+            int linhasAfetadas = st.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                Long rt = 0l;
+                ResultSet rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    Long id = rs.getLong(1);
+                    venda.setId(id);
+                    rt = id;
+                }
+                Db.closeResultSet(rs);
+                return rt;
+            } else {
+                throw new DbException("Ocorreu um erro. Não houveram linhas afetadas!");
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            Db.closeStatement(st);
         }
     }
 }

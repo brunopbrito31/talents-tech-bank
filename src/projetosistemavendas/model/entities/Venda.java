@@ -1,23 +1,44 @@
 package projetosistemavendas.model.entities;
 
+import projetosistemavendas.model.entitiesDao.FabricaDAO;
+import projetosistemavendas.model.entitiesDao.VendaDAO;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Venda {
 
     private Long id;
-    private Double valor;
+    private BigDecimal valor;
     private Date dataHora;
-    //private List<ItemVenda> itensVenda;
+    private List<ItemVenda> itensVenda;
 
-    public Venda(Long id, Double valor, Date dataHora) {
+    public Venda(Long id, BigDecimal valor, Date dataHora) {
         this.id = id;
         this.valor = valor;
         this.dataHora = dataHora;
-        //itensVenda = new ArrayList<>();
+        itensVenda = new ArrayList<>();
     }
 
     public Venda() {
+    }
+
+    public static Venda AbrirVenda() {
+        Venda vendaAberta = new Venda(null, BigDecimal.valueOf(0d), new java.sql.Date(Date.from(Instant.now()).getTime()));
+        FabricaDAO.criarVendaDAO().inserirAberturaVenda(vendaAberta);
+        return vendaAberta;
+    }
+
+    public void atualizarVenda() {
+        FabricaDAO.criarVendaDAO().atualizar(this);
+    }
+
+    public void exibirTodosItens() {
+        itensVenda.forEach(ItemVenda::exibirItemNaVenda);
     }
 
     public Long getId() {
@@ -28,11 +49,11 @@ public class Venda {
         this.id = id;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
@@ -44,13 +65,13 @@ public class Venda {
         this.dataHora = dataHora;
     }
 
-    /*public List<ItemVenda> getItensVenda() {
+    public List<ItemVenda> getItensVenda() {
         return itensVenda;
     }
 
     public void setItensVenda(List<ItemVenda> itensVenda) {
         this.itensVenda = itensVenda;
-    }*/
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -70,7 +91,7 @@ public class Venda {
         return "Venda{" +
                 "id=" + id +
                 ", valor=" + valor +
-                ", dataHora=" + dataHora+
+                ", dataHora=" + dataHora +
                 '}';
     }
 }
