@@ -5,11 +5,13 @@ import projetosistemavendas.model.entities.Produto;
 import projetosistemavendas.model.entities.Venda;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Menu {
 
     public static void iniciar(){
+        Locale.setDefault(Locale.US);
         Scanner reader = new Scanner(System.in);
         int opcao = 0;
         System.out.println("-*--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
